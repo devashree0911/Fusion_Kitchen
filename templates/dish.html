@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #0047ab;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #add8e6;
+  color: black;
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>{{recip["name"]}}|Fusion Kitchen</title>
+    <link rel='icon' href="{{url_for('static', filename='images/favicon.svg')}}"/>
+
+    <!-- Favicon -->
+    <!--<link rel="icon" href="img/core-img/favicon.ico">-->
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../static/CSS/style1.css">
+
+</head>
+<body>
+<p align="center"> <img src="../static/images/logo.png" id="logo"></p>
+<ul class="nav">
+  <li><a class="active" href="/">Home</a></li>
+  <li><a href="/profile">User Profile</a></li>
+  <li><a href="/gallery">Gallery</a></li>
+  <li><a href="/saved">Saved recipes</a></li>
+  <li><a href="/logout">Logout</a></li>
+</ul>
+<br>
+        <!-- Receipe Slider -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="receipe-slider owl-carousel">
+                        <img src="../static/images/blog-img/{{recip['image']}}" alt="">
+                        <iframe width="960" height="415" src="{{recip['youtube']}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Receipe Content Area -->
+        <div class="receipe-content-area">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <div class="receipe-headline my-5">
+                            <h2>{{recip["name"]}}</h2>
+                            <div class="receipe-duration">
+                                <h6>Prep: {{recip["prep"]}}</h6>
+                                <h6>Cook: {{recip["cook"]}}</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <div class="receipe-ratings text-right my-5">
+                            <div class="ratings">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                            </div>
+                            <a href="/save/{{urname}}" class="btn delicious-btn">Save Recipe</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <!-- Single Preparation Step -->
+                        {%for i in recip["steps"]%}
+                        {%if i!=None%}
+                        <div class="single-preparation-step d-flex">
+                            <h4>{{loop.index-1}}.</h4>
+                            <p>{{i}}</p>
+                        </div>
+                        {%endif%}
+                        {%endfor%}
+                    </div>
+
+                    <!-- Ingredients -->
+                    <div class="col-12 col-lg-4">
+                        <div class="ingredients">
+                            <h4>Ingredients</h4>
+                            {%for i in recip["ingredients"]%}
+                            {%if i!=None%}
+                            <!-- Custom Checkbox -->
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck{{loop.index-1}}">
+                                <label class="custom-control-label" for="customCheck{{loop.index-1}}">{{i}}</label>
+                            </div>
+                            {%endif%}
+                            {%endfor%}
+
+                        </div>
+                    </div>
+                </div>
+                {%if reviews|length!=0%}
+                <div id="reviewed">
+                    <h2>Reviews</h2>
+                    {%for i in reviews%}
+                    <div class="reviewed">
+                        <h3 class="reviwedhead">{{i["subject"]}}</h3>
+                        <cite>- {{i["fname"]}} {{i["lname"]}}</cite>
+                        <p>{{i["message"]}}</p>
+                    </div>
+                    {%endfor%}
+                </div>
+                {%endif%}
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section-heading text-left">
+                            <h3>Leave a comment</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="contact-form-area">
+                            <form action="/dish/{{urname}}" method="post">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject">
+                                    </div>
+                                    <div class="col-12">
+                                        <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn delicious-btn mt-30" type="submit">Post Comments</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ##### All Javascript Files ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="../static/JS/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="../static/JS/bootstrap/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="../static/JS/bootstrap/bootstrap.min.js"></script>
+    <!-- All Plugins js -->
+    <script src="../static/JS/plugins/plugins.js"></script>
+    <!-- Active js -->
+    <script src="../static/JS/active.js"></script>
+</body>
+
+</html>
